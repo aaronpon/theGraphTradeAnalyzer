@@ -1,0 +1,39 @@
+{
+  "private": true,
+  "scripts": {
+    "script": "ts-node --project scripts/tsconfig.json --require dotenv-extended/config scripts",
+    "precodegen": "rimraf src/generated",
+    "codegen": "graph codegen subgraph.yaml --output-dir src/generated",
+    "postcodegen": "yarn script flatten",
+    "create:local": "graph create melonproject/melon-dev --node http://localhost:8020",
+    "predeploy:local": "yarn create:local || true",
+    "deploy:local": "graph deploy melonproject/melon-dev subgraph.yaml --ipfs http://localhost:5001 --node http://localhost:8020",
+    "deploy": "graph deploy melonproject/melon-dev subgraph.mainnet.yaml --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
+    "auth": "graph auth https://api.thegraph.com/deploy/",
+    "format": "prettier --write {src,scripts}/{*,**/*}.{ts,json,yaml}",
+    "lint": "yarn prettier --list-different {src,scripts}/{*,**/*}.{ts,json,yaml}"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "^0.18.0",
+    "@graphprotocol/graph-ts": "^0.18.1",
+    "@types/mustache": "^4.0.1",
+    "@types/node": "^13.13.5",
+    "@types/prettier": "^2.0.0",
+    "@types/rimraf": "^3.0.0",
+    "@types/yargs": "^15.0.4",
+    "assemblyscript": "^0.9.4",
+    "dotenv-extended": "^2.5.0",
+    "ethers": "^5.0.0-beta.180",
+    "glob": "^7.1.6",
+    "handlebars": "^4.7.6",
+    "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.8.3",
+    "yaml": "^1.8.3",
+    "yargs": "^15.3.1"
+  },
+  "abigen": {
+    "input": "../melon-protocol/out"
+  }
+}
